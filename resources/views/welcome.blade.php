@@ -12,62 +12,66 @@
 
 <body>
     <div class="container mt-5">
-		<div class="row justify-content-center">
-			<div class="col-sm-4">
-				<form class="card">
-					<div class="card-body">
+        <div class="row justify-content-center">
+            <div class="col-sm-4">
+                <form class="card">
+                    <div class="card-body">
                         <h2 class="text-center">Dymo Printer</h2>
-						<div class="mb-3 mt-3">
-							<label for="sampleText" class="form-label">Sample Text:</label>
-							<input type="text" class="form-control" id="sampleText" placeholder="Sample Text">
-						</div>
+                        <div id="alertPad"></div>
+                        <div class="mb-3 mt-3">
+                            <label for="sampleText" class="form-label">TRG ID:</label>
+                            <input type="number" class="form-control" id="sampleText" placeholder="Input TRG ID">
+                        </div>
                         <div class="my-3">
                             <label class="form-label" for="printersSelect">Printer:</label>
                             <select class="form-control" id="printersSelect"></select>
                         </div>
-						<div class="text-end my-3">
-							<button type="button" id="resetButton" class="btn btn-danger">Reset</button>
-							<button type="button" id="printButton" class="btn btn-primary">Print</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
+                        <div class="text-end my-3">
+                            <button type="button" id="resetButton" class="btn btn-danger">Reset</button>
+                            <button type="button" id="printButton" class="btn btn-primary">Print</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="/assets/plugins/dymo/dymo.label.framework.js"></script>
+    <script src="/assets/plugins/dymo/dymo.label.framework.js"></script>
 
-	<script>
-        (function()
-        {
+    <script>
+        (function() {
             // stores loaded label info
             var label;
 
             // called when the document completly loaded
-            function onload()
-            {
+            function onload() {
                 var printersSelect = document.getElementById('printersSelect');
                 var printButton = document.getElementById('printButton');
                 var resetButton = document.getElementById('resetButton');
                 var sampleText = document.getElementById('sampleText');
+                const alertPlaceholder = document.getElementById('alertPad');
 
                 // initialize controls
                 printButton.disabled = true;
-                // sampleText.disabled = true;
+                sampleText.disabled = true;
 
                 // loads all supported printers into a combo box
-                function loadPrinters()
-                {
+                function loadPrinters() {
                     var printers = dymo.label.framework.getPrinters();
-                    if (printers.length == 0)
-                    {
-                        alert("No DYMO printers are installed. Install DYMO printers.");
+                    if (printers.length == 0) {
+                        //alert("No DYMO printers are installed. Install DYMO printers.");
+                        const wrapper = document.createElement('div');
+                        wrapper.innerHTML = [
+                            `<div class="alert alert-danger alert-dismissible" role="alert">`,
+                            `   <div>No DYMO printers are installed. Install DYMO printers.</div>`,
+                            '</div>'
+                        ].join('');
+                        alertPlaceholder.append(wrapper);
                         return;
                     }
 
-                    for (var i = 0; i < printers.length; i++)
-                    {
+                    for (var i = 0; i < printers.length; i++) {
                         var printerName = printers[i].name;
 
                         var option = document.createElement('option');
@@ -79,8 +83,7 @@
                     }
                 }
 
-                sampleText.onchange = function()
-                {
+                sampleText.onchange = function() {
                     var text = sampleText.value;
                     var testAddressLabelXml = `<?xml version="1.0" encoding="utf-8"?>\
                         <DieCutLabel Version="8.0" Units="twips">\
@@ -136,12 +139,9 @@
                 }
 
                 // prints the label
-                printButton.onclick = function()
-                {
-                    try
-                    {
-                        if (!label)
-                        {
+                printButton.onclick = function() {
+                    try {
+                        if (!label) {
                             alert("Load label before printing");
                             return;
                         }
@@ -149,9 +149,7 @@
                         //alert(printersSelect.value);
                         label.print(printersSelect.value);
                         //label.print("unknown printer");
-                    }
-                    catch(e)
-                    {
+                    } catch (e) {
                         alert(e.message || e);
                     }
                 }
@@ -167,7 +165,7 @@
                 window.attachEvent("onload", onload);
             else
                 window.onload = onload;
-        } ());
+        }());
     </script>
 </body>
 
