@@ -26,6 +26,7 @@
                             <label class="form-label" for="printersSelect">Printer:</label>
                             <select class="form-control" id="printersSelect"></select>
                         </div>
+                        <div id="printerDetail"></div>
                         <div class="text-end my-3">
                             <button type="button" id="resetButton" class="btn btn-danger">Reset</button>
                             <button type="button" id="printButton" class="btn btn-primary">Print</button>
@@ -120,14 +121,14 @@
                     _printers = [];
                     dymo.label.framework.getPrintersAsync().then(function (printers) {
                         if (printers.length == 0) {
-                            //alert("No DYMO printers are installed. Install DYMO printers.");
-                            const wrapper = document.createElement('div');
-                            wrapper.innerHTML = [
-                                `<div class="alert alert-danger alert-dismissible" role="alert">`,
-                                `   <div>No DYMO printers are installed. Install DYMO printers.</div>`,
-                                '</div>'
-                            ].join('');
-                            alertPlaceholder.append(wrapper);
+                            alert("No DYMO printers are installed. Install DYMO printers.");
+                            // const wrapper = document.createElement('div');
+                            // wrapper.innerHTML = [
+                            //     `<div class="alert alert-danger alert-dismissible" role="alert">`,
+                            //     `   <div>No DYMO printers are installed. Install DYMO printers.</div>`,
+                            //     '</div>'
+                            // ].join('');
+                            // alertPlaceholder.append(wrapper);
                             return;
                         }
                         _printers = printers;
@@ -147,48 +148,48 @@
 
                 sampleText.onchange = function() {
                     var text = sampleText.value;
-                    var testAddressLabelXml = `<?xml version="1.0" encoding="utf-8"?>\
-                        <DieCutLabel Version="8.0" Units="twips">\
-                            <PaperOrientation>Landscape</PaperOrientation>\
-                            <Id>Barcode</Id>\
-                            <PaperName>Barcode</PaperName>\
-                            <DrawCommands>\
-                                <RoundRectangle X="0" Y="0" Width="1581" Height="5040" Rx="270" Ry="270" />\
-                            </DrawCommands>\
-                            <ObjectInfo>\
-                                <AddressObject>\
-                                    <Name>Barcode</Name>\
-                                    <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
-                                    <BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
-                                    <LinkedObjectName></LinkedObjectName>\
-                                    <Rotation>Rotation0</Rotation>\
-                                    <IsMirrored>False</IsMirrored>\
-                                    <IsVariable>True</IsVariable>\
-                                    <HorizontalAlignment>Left</HorizontalAlignment>\
-                                    <VerticalAlignment>Middle</VerticalAlignment>\
-                                    <TextFitMode>ShrinkToFit</TextFitMode>\
-                                    <UseFullFontHeight>True</UseFullFontHeight>\
-                                    <Verticalized>False</Verticalized>\
-                                    <StyledText>\
-                                        <Element>\
-                                            <String>${text}</String>\
-                                            <Attributes>\
-                                                <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
-                                                <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
-                                            </Attributes>\
-                                        </Element>\
-                                    </StyledText>\
-                                    <ShowBarcodeFor9DigitZipOnly>False</ShowBarcodeFor9DigitZipOnly>\
-                                    <BarcodePosition>AboveAddress</BarcodePosition>\
-                                    <LineFonts>\
-                                        <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
-                                        <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
-                                        <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
-                                    </LineFonts>\
-                                </AddressObject>\
-                                <Bounds X="332" Y="150" Width="4455" Height="1260" />\
-                            </ObjectInfo>\
-                        </DieCutLabel>`;
+                    var testAddressLabelXml = '<?xml version="1.0" encoding="utf-8"?>\
+    <DieCutLabel Version="8.0" Units="twips">\
+        <PaperOrientation>Landscape</PaperOrientation>\
+        <Id>Address</Id>\
+        <PaperName>30252 Address</PaperName>\
+        <DrawCommands>\
+            <RoundRectangle X="0" Y="0" Width="1581" Height="5040" Rx="270" Ry="270" />\
+        </DrawCommands>\
+        <ObjectInfo>\
+            <AddressObject>\
+                <Name>Address</Name>\
+                <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+                <BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
+                <LinkedObjectName></LinkedObjectName>\
+                <Rotation>Rotation0</Rotation>\
+                <IsMirrored>False</IsMirrored>\
+                <IsVariable>True</IsVariable>\
+                <HorizontalAlignment>Left</HorizontalAlignment>\
+                <VerticalAlignment>Middle</VerticalAlignment>\
+                <TextFitMode>ShrinkToFit</TextFitMode>\
+                <UseFullFontHeight>True</UseFullFontHeight>\
+                <Verticalized>False</Verticalized>\
+                <StyledText>\
+                    <Element>\
+                        <String>DYMO\n3 Glenlake Parkway\nAtlanta, GA 30328</String>\
+                        <Attributes>\
+                            <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+                            <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+                        </Attributes>\
+                    </Element>\
+                </StyledText>\
+                <ShowBarcodeFor9DigitZipOnly>False</ShowBarcodeFor9DigitZipOnly>\
+                <BarcodePosition>AboveAddress</BarcodePosition>\
+                <LineFonts>\
+                    <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+                    <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+                    <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+                </LineFonts>\
+            </AddressObject>\
+            <Bounds X="332" Y="150" Width="4455" Height="1260" />\
+        </ObjectInfo>\
+    </DieCutLabel>';
 
                     label = dymo.label.framework.openLabelXml(testAddressLabelXml);
 
@@ -210,6 +211,7 @@
 
                         //alert(printersSelect.value);
                         label.print(printersSelect.value);
+                        console.log('Printed', printersSelect.value)
                         //label.print("unknown printer");
                     } catch (e) {
                         alert(e.message || e);
